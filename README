@@ -1,0 +1,28 @@
+LibYAML-DOM
+
+Why?
+----
+This library is a wrapper for the streaming parser and emitter APIs
+for LibYAML providing a replacement DOM style API. It is able to
+generate a document graph from scratch or parse a YAML document
+into a document graph for editing. Once the document is complete,
+it can be emitted through a single function call.
+
+The native LibYAML DOM style API seems to require the user to keep
+track of the index of each non-root node they wish to lookup.
+
+
+Building and example usage
+--------------------------
+# Build the library and examples
+mkdir build && cd build
+cmake ..
+make
+
+# Example 1: Generate yaml from scratch
+## Source available in example/scratch.c
+./example-scratch | tee data.yaml
+
+# Example 2: Edit the previously generated yaml
+## Source available in example/edit.c
+./example-edit < data.yaml
