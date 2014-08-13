@@ -1,7 +1,7 @@
 LibYAML-DOM
 
-Why?
-----
+About
+-----
 This library is a wrapper for the streaming parser and emitter APIs
 for LibYAML providing a replacement DOM style API. It is able to
 generate a document graph from scratch or parse a YAML document
