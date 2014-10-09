@@ -33,3 +33,6 @@ target_link_libraries(example-scratch yamldom ${LIBYAML_LIBRARIES})
 
 add_executable(example-edit ${EX_ED_FILES})
 target_link_libraries(example-edit yamldom ${LIBYAML_LIBRARIES})
+
+install(TARGETS yamldom DESTINATION lib)
+install(FILES src/yamldom.h DESTINATION include)
