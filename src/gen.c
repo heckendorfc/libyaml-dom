@@ -226,19 +226,25 @@ yamldom_node_t* yamldom_find_map_val(yamldom_node_t *root, const char *name){
 	return NULL;
 }
 
-yamldom_node_t* yamldom_make_map_nextanchor(yamldom_node_t *seqroot, const char *fmt){
+int yamldom_maxanchor(yamldom_node_t *seqroot, const char *fmt){
 	yamldom_node_t *cnode=YAMLDOM_SEQ_NODES(seqroot);
 	char buf[100];
-	int max=1;
+	int max=0;
 	int cur;
 
 	while(cnode){
 		sscanf(cnode->anchor,fmt,&cur);
 		if(cur>=max)
-			max=cur+1;
+			max=cur;
 		cnode=cnode->next;
 	}
 
-	sprintf(buf,fmt,max);
+	return max;
+}
+
+yamldom_node_t* yamldom_make_map_nextanchor(yamldom_node_t *seqroot, const char *fmt){
+	char buf[100];
+	int max = yamldom_maxanchor(seqroot,fmt);
+	sprintf(buf,fmt,max+1);
 	return yamldom_make_map(buf);
 }
