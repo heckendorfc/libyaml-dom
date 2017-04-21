@@ -19,6 +19,7 @@ enum y_types{
 
 typedef struct yamldom_node_s{
 	struct yamldom_node_s *next;
+	struct yamldom_node_s *last; /* for append_node() */
 	int type;
 	char *anchor;
 	void *data;

@@ -30,11 +30,16 @@ yamldom_anchor_list_t* yamldom_append_anchor_tail(yamldom_anchor_list_t *anchor,
 yamldom_node_t* yamldom_append_node(yamldom_node_t *a, yamldom_node_t *b){
 	yamldom_node_t *ret=a;
 
-	if(!a)
+	if(!a){
+		b->last=NULL;
 		return b;
+	}
 
+	if(a->last)
+		a=a->last;
 	while(a->next)a=a->next;
 	a->next=b;
+	ret->last=b;
 
 	return ret;
 }
@@ -51,6 +56,7 @@ yamldom_node_t* yamldom_make_seq(char *anchor){
 	tmpnode->data=data;
 	tmpnode->anchor=anchor?strdup(anchor):NULL;
 	tmpnode->next=NULL;
+	tmpnode->last=NULL;
 
 	return tmpnode;
 }
@@ -67,6 +73,7 @@ yamldom_node_t* yamldom_make_map(char *anchor){
 	tmpnode->data=data;
 	tmpnode->anchor=anchor?strdup(anchor):NULL;
 	tmpnode->next=NULL;
+	tmpnode->last=NULL;
 
 	return tmpnode;
 }
@@ -93,6 +100,7 @@ yamldom_node_t* yamldom_make_scalar(const char *tag, char *val, size_t length){
 	tmpnode->anchor=NULL;
 	tmpnode->data=data;
 	tmpnode->next=NULL;
+	tmpnode->last=NULL;
 
 	return tmpnode;
 }
@@ -116,6 +124,7 @@ yamldom_node_t* yamldom_make_alias(yamldom_anchor_list_t *anchors, char *alias){
 	tmpnode->anchor=NULL;
 	tmpnode->data=data;
 	tmpnode->next=NULL;
+	tmpnode->last=NULL;
 
 	return tmpnode;
 }
