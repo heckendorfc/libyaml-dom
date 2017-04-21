@@ -59,7 +59,7 @@ yamldom_node_t* yamldom_find_anchor_node(yamldom_anchor_list_t *anchors, const c
 	return NULL;
 }
 
-yamldom_node_t* yamldom_make_scalar(char *tag, char *val, size_t length){
+yamldom_node_t* yamldom_make_scalar(const char *tag, char *val, size_t length){
 	yamldom_node_t *tmpnode=NULL;
 	yamldom_scalar_t *data;
 
@@ -76,7 +76,7 @@ yamldom_node_t* yamldom_make_scalar(char *tag, char *val, size_t length){
 	return tmpnode;
 }
 
-yamldom_node_t* yamldom_make_scalar_alloc(char *tag, char *val, size_t length){
+yamldom_node_t* yamldom_make_scalar_alloc(const char *tag, char *val, size_t length){
 	yamldom_node_t *node=yamldom_make_scalar(tag,NULL,-1);
 	((yamldom_scalar_t*)node->data)->val=val;
 	return node;
