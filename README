@@ -18,6 +18,7 @@ Building and example usage
 mkdir build && cd build
 cmake ..
 make
+make install
 
 # Example 1: Generate yaml from scratch
 ## Source available in example/scratch.c
