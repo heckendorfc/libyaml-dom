@@ -1,10 +1,31 @@
-/* Copyright 2014, Heckendorf */
+/* Copyright 2017, Heckendorf */
 
 #include <string.h>
 #include <yaml.h>
 #include "yamldom.h"
 #include "list.h"
 #include "common.h"
+
+yamldom_anchor_list_t* yamldom_append_anchor(yamldom_anchor_list_t *anchor, yamldom_node_t *ref, char *val){
+	yamldom_anchor_list_t *tmp;
+	ADDNODE(anchor,tmp);
+
+	anchor->ref=ref;
+	anchor->val=strdup(val);
+
+	return anchor;
+}
+
+yamldom_anchor_list_t* yamldom_append_anchor_tail(yamldom_anchor_list_t *anchor, yamldom_node_t *ref, char *val){
+	yamldom_anchor_list_t *tmp;
+	FINDTAILNODE(anchor);
+	ADDNODEAFTER(anchor,tmp);
+
+	anchor->next->ref=ref;
+	anchor->next->val=strdup(val);
+
+	return anchor;
+}
 
 yamldom_node_t* yamldom_append_node(yamldom_node_t *a, yamldom_node_t *b){
 	yamldom_node_t *ret=a;
@@ -125,10 +146,7 @@ static yamldom_node_t* io_gen_rec(yamldom_data_t *ydd, yamldom_anchor_list_t *an
 			case YAML_SEQUENCE_START_EVENT:
 				curnode=yamldom_make_seq((char*)event.data.sequence_start.anchor);
 				if(event.data.sequence_start.anchor){
-					FINDTAILNODE(anchor_tail);
-					ADDNODEAFTER(anchor_tail,tmp);
-					anchor_tail->next->ref=curnode;
-					anchor_tail->next->val=strdup((char*)event.data.sequence_start.anchor);
+					anchor_tail=yamldom_append_anchor_tail(anchor_tail,curnode,(char*)event.data.sequence_start.anchor);
 				}
 				nodes=yamldom_append_node(nodes,curnode);
 				((yamldom_seq_t*)curnode->data)->nodes=tmpnode=io_gen_rec(ydd,anchors,YAML_SEQUENCE_END_EVENT,err);
@@ -138,10 +156,7 @@ static yamldom_node_t* io_gen_rec(yamldom_data_t *ydd, yamldom_anchor_list_t *an
 			case YAML_MAPPING_START_EVENT:
 				curnode=yamldom_make_map((char*)event.data.mapping_start.anchor);
 				if(event.data.mapping_start.anchor){
-					FINDTAILNODE(anchor_tail);
-					ADDNODEAFTER(anchor_tail,tmp);
-					anchor_tail->next->ref=curnode;
-					anchor_tail->next->val=strdup((char*)event.data.mapping_start.anchor);
+					anchor_tail=yamldom_append_anchor_tail(anchor_tail,curnode,(char*)event.data.mapping_start.anchor);
 				}
 				nodes=yamldom_append_node(nodes,curnode);
 				((yamldom_map_t*)curnode->data)->nodes=tmpnode=io_gen_rec(ydd,anchors,YAML_MAPPING_END_EVENT,err);

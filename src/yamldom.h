@@ -57,6 +57,8 @@ typedef struct yamldom_data_t{
 }yamldom_data_t;
 
 /* gen */
+yamldom_anchor_list_t* yamldom_append_anchor(yamldom_anchor_list_t *anchor, yamldom_node_t *ref, char *val);
+yamldom_anchor_list_t* yamldom_append_anchor_tail(yamldom_anchor_list_t *anchor, yamldom_node_t *ref, char *val);
 yamldom_node_t* yamldom_append_node(yamldom_node_t *a, yamldom_node_t *b);
 yamldom_node_t* yamldom_make_seq(char *anchor);
 yamldom_node_t* yamldom_make_map(char *anchor);
