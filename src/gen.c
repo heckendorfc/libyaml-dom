@@ -154,7 +154,7 @@ static yamldom_node_t* io_gen_rec(yamldom_data_t *ydd, yamldom_anchor_list_t *an
 		{
 			case YAML_SEQUENCE_START_EVENT:
 				curnode=yamldom_make_seq((char*)event.data.sequence_start.anchor);
-				if(event.data.sequence_start.anchor){
+				if(anchors && event.data.sequence_start.anchor){
 					anchor_tail=yamldom_append_anchor_tail(anchor_tail,curnode,(char*)event.data.sequence_start.anchor);
 				}
 				nodes=yamldom_append_node(nodes,curnode);
@@ -164,7 +164,7 @@ static yamldom_node_t* io_gen_rec(yamldom_data_t *ydd, yamldom_anchor_list_t *an
 				break;
 			case YAML_MAPPING_START_EVENT:
 				curnode=yamldom_make_map((char*)event.data.mapping_start.anchor);
-				if(event.data.mapping_start.anchor){
+				if(anchors && event.data.mapping_start.anchor){
 					anchor_tail=yamldom_append_anchor_tail(anchor_tail,curnode,(char*)event.data.mapping_start.anchor);
 				}
 				nodes=yamldom_append_node(nodes,curnode);
@@ -195,14 +195,17 @@ static yamldom_node_t* io_gen_rec(yamldom_data_t *ydd, yamldom_anchor_list_t *an
 
 yamldom_node_t* yamldom_gen(yamldom_data_t *ydd, yamldom_anchor_list_t *anchor_ret){
 	yamldom_node_t *node_ret;
-	yamldom_anchor_list_t anchors;
+	yamldom_anchor_list_t anchors, *p=NULL;
 	int err = 0;
 
 	anchors.val=NULL;
 	anchors.ref=NULL;
 	anchors.next=NULL;
 
-	node_ret=io_gen_rec(ydd,&anchors,YAML_STREAM_END_EVENT,&err);
+	if(anchor_ret)
+		p = &anchors;
+
+	node_ret=io_gen_rec(ydd,p,YAML_STREAM_END_EVENT,&err);
 
 	if(anchor_ret){
 		anchor_ret->next=anchors.next;
