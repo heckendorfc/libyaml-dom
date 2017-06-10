@@ -68,7 +68,7 @@ yamldom_node_t* yamldom_make_scalar(const char *tag, char *val, size_t length);
 yamldom_node_t* yamldom_make_scalar_alloc(const char *tag, char *val, size_t length);
 yamldom_node_t* yamldom_make_alias(yamldom_anchor_list_t *anchors, char *alias);
 yamldom_node_t* yamldom_find_map_val(yamldom_node_t *root, const char *name);
-int yamldom_maxanchor(iotree_node_t *seqroot, const char *fmt);
+int yamldom_maxanchor(yamldom_node_t *seqroot, const char *fmt);
 yamldom_node_t* yamldom_make_map_nextanchor(yamldom_node_t *seqroot, const char *fmt);
 yamldom_node_t* yamldom_gen(yamldom_data_t *ydd, yamldom_anchor_list_t *anchor_ret);
 
